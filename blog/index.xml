@@ -6,7 +6,21 @@
     <description>Recent content in Blogs on Lslightly&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://lslightly.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Oct 2023 21:28:54 +0800</lastBuildDate><atom:link href="https://lslightly.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SSHFS服务器目录挂载至Windows本地</title>
+      <link>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</link>
+      <pubDate>Sat, 28 Oct 2023 21:28:54 +0800</pubDate>
+      
+      <guid>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</guid>
+      <description>概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。
+想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。
+对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。
+这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&amp;gt;本机-&amp;gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。
+解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id &amp;#34;WinFsp.WinFsp&amp;#34; &amp;amp;&amp;amp; winget install -h -e --id &amp;#34;SSHFS-Win.SSHFS-Win&amp;#34; 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。
+Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config </description>
+    </item>
+    
     <item>
       <title>ffi-go 组会心得</title>
       <link>https://lslightly.github.io/blog/2022-03-21/</link>
@@ -70,16 +84,6 @@
 发论文要有科研训练（举个栗子，讲个笑话，不要像现场那位小哥，xs，说自己发现了很厉害的算法要发高级会议，非要逮着院长问。我真的醉了，想必他发明的算法别人一眼就看透了，哎，承包了我一晚上的笑点）
 总结 说起来我可能都知道这些道理，但实际实践起来真是很难啊，有时候也想不到或者不注意这些点。总之收获还是蛮大的（感觉被灌了一大波鸡汤，但不像。这种会听一次感觉收获都挺大，啊这）
 回头看看如果有重要图片的话加上来</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</guid>
-      <description>#! https://zhuanlan.zhihu.com/p/663886871 +++ title = &amp;lsquo;SSHFS服务器目录挂载至Windows本地&amp;rsquo; date = 2023-10-28T21:28:54+08:00 draft = false +++
-想法起因 解决方案 探寻过程 </description>
     </item>
     
   </channel>

@@ -5,10 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Lslightly&#39;s Blog</title>
+<title>SSHFS服务器目录挂载至Windows本地 | Lslightly&#39;s Blog</title>
 <meta name="keywords" content="">
-<meta name="description" content="#! https://zhuanlan.zhihu.com/p/663886871 &#43;&#43;&#43; title = &lsquo;SSHFS服务器目录挂载至Windows本地&rsquo; date = 2023-10-28T21:28:54&#43;08:00 draft = false &#43;&#43;&#43;
-想法起因 解决方案 探寻过程 ">
+<meta name="description" content="概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。
+想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。
+对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。
+这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&gt;本机-&gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。
+解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id &#34;WinFsp.WinFsp&#34; &amp;&amp; winget install -h -e --id &#34;SSHFS-Win.SSHFS-Win&#34; 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。
+Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config ">
 <meta name="author" content="">
 <link rel="canonical" href="https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
@@ -56,18 +60,26 @@
         }
 
     </style>
-</noscript><meta property="og:title" content="" />
-<meta property="og:description" content="#! https://zhuanlan.zhihu.com/p/663886871 &#43;&#43;&#43; title = &lsquo;SSHFS服务器目录挂载至Windows本地&rsquo; date = 2023-10-28T21:28:54&#43;08:00 draft = false &#43;&#43;&#43;
-想法起因 解决方案 探寻过程 " />
+</noscript><meta property="og:title" content="SSHFS服务器目录挂载至Windows本地" />
+<meta property="og:description" content="概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。
+想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。
+对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。
+这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&gt;本机-&gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。
+解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id &#34;WinFsp.WinFsp&#34; &amp;&amp; winget install -h -e --id &#34;SSHFS-Win.SSHFS-Win&#34; 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。
+Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/" /><meta property="article:section" content="blog" />
-
-
+<meta property="article:published_time" content="2023-10-28T21:28:54+08:00" />
+<meta property="article:modified_time" content="2023-10-28T21:28:54+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="#! https://zhuanlan.zhihu.com/p/663886871 &#43;&#43;&#43; title = &lsquo;SSHFS服务器目录挂载至Windows本地&rsquo; date = 2023-10-28T21:28:54&#43;08:00 draft = false &#43;&#43;&#43;
-想法起因 解决方案 探寻过程 "/>
+<meta name="twitter:title" content="SSHFS服务器目录挂载至Windows本地"/>
+<meta name="twitter:description" content="概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。
+想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。
+对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。
+这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&gt;本机-&gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。
+解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id &#34;WinFsp.WinFsp&#34; &amp;&amp; winget install -h -e --id &#34;SSHFS-Win.SSHFS-Win&#34; 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。
+Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config "/>
 
 
 <script type="application/ld+json">
@@ -84,7 +96,7 @@
     {
       "@type": "ListItem",
       "position":  3 ,
-      "name": "",
+      "name": "SSHFS服务器目录挂载至Windows本地",
       "item": "https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/"
     }
   ]
@@ -94,17 +106,17 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "",
-  "name": "",
-  "description": "#! https://zhuanlan.zhihu.com/p/663886871 +++ title = \u0026lsquo;SSHFS服务器目录挂载至Windows本地\u0026rsquo; date = 2023-10-28T21:28:54+08:00 draft = false +++\n想法起因 解决方案 探寻过程 ",
+  "headline": "SSHFS服务器目录挂载至Windows本地",
+  "name": "SSHFS服务器目录挂载至Windows本地",
+  "description": "概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。\n想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。\n对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。\n这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-\u0026gt;本机-\u0026gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。\n解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id \u0026#34;WinFsp.WinFsp\u0026#34; \u0026amp;\u0026amp; winget install -h -e --id \u0026#34;SSHFS-Win.SSHFS-Win\u0026#34; 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。\nBad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config ",
   "keywords": [
     
   ],
-  "articleBody": "#! https://zhuanlan.zhihu.com/p/663886871 +++ title = ‘SSHFS服务器目录挂载至Windows本地’ date = 2023-10-28T21:28:54+08:00 draft = false +++\n想法起因 解决方案 探寻过程 ",
-  "wordCount" : "16",
+  "articleBody": "概述 本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。\n想法起因 在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。\n对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。\n这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过curl或者wget下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-\u003e本机-\u003e服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。\n解决方案 下载winfsp安装包和sshfs-win安装包。可以使用winget下载 winget install -h -e --id \"WinFsp.WinFsp\" \u0026\u0026 winget install -h -e --id \"SSHFS-Win.SSHFS-Win\" 下载sirikali GUI前端 下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。 然后创建卷，选择sshfs 将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加 在我的收藏中选中刚刚添加的路径，连接即可。 探寻过程 在Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎中提到使用evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。\nBad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config ",
+  "wordCount" : "47",
   "inLanguage": "en",
-  "datePublished": "0001-01-01T00:00:00Z",
-  "dateModified": "0001-01-01T00:00:00Z",
+  "datePublished": "2023-10-28T21:28:54+08:00",
+  "dateModified": "2023-10-28T21:28:54+08:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/"
@@ -170,22 +182,34 @@
   <header class="post-header">
     
     <h1 class="post-title">
-      
+      SSHFS服务器目录挂载至Windows本地
     </h1>
-    <div class="post-meta">
+    <div class="post-meta"><span title='2023-10-28 21:28:54 +0800 CST'>October 28, 2023</span>
 
 </div>
   </header> 
-  <div class="post-content"><p>#! <a href="https://zhuanlan.zhihu.com/p/663886871">https://zhuanlan.zhihu.com/p/663886871</a>
-+++
-title = &lsquo;SSHFS服务器目录挂载至Windows本地&rsquo;
-date = 2023-10-28T21:28:54+08:00
-draft = false
-+++</p>
+  <div class="post-content"><h2 id="概述">概述<a hidden class="anchor" aria-hidden="true" href="#概述">#</a></h2>
+<p>本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。</p>
 <h2 id="想法起因">想法起因<a hidden class="anchor" aria-hidden="true" href="#想法起因">#</a></h2>
+<p>在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。</p>
+<p>对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。</p>
+<p>这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过<code>curl</code>或者<code>wget</code>下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&gt;本机-&gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。</p>
 <h2 id="解决方案">解决方案<a hidden class="anchor" aria-hidden="true" href="#解决方案">#</a></h2>
+<ol>
+<li>下载<a href="https://github.com/winfsp/winfsp/releases">winfsp安装包</a>和<a href="https://github.com/winfsp/sshfs-win/releases">sshfs-win安装包</a>。可以使用<code>winget</code>下载</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>winget install -h -e --id <span style="color:#e6db74">&#34;WinFsp.WinFsp&#34;</span> &amp;&amp; winget install -h -e --id <span style="color:#e6db74">&#34;SSHFS-Win.SSHFS-Win&#34;</span>
+</span></span></code></pre></div><ol start="2">
+<li>下载<a href="https://github.com/mhogomchungu/sirikali/releases/">sirikali GUI前端</a></li>
+<li>下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。</li>
+<li>然后创建卷，选择sshfs</li>
+<li>将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加</li>
+<li>在我的收藏中选中刚刚添加的路径，连接即可。</li>
+</ol>
 <h2 id="探寻过程">探寻过程<a hidden class="anchor" aria-hidden="true" href="#探寻过程">#</a></h2>
-
+<p>在<a href="https://zhuanlan.zhihu.com/p/314245985">Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎</a>中提到使用<a href="https://github.com/evsar3/sshfs-win-manager">evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)</a>，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。</p>
+<pre tabindex="0"><code>Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config
+</code></pre>
 
   </div>
 
