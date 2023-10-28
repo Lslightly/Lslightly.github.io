@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>ffi-go 组会心得 | Lslightly Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="ffi-go 组会心得 这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。
+今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。
+首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I&rsquo;m trivial。
+然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊&hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。
+另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。
+正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。
+就写这么多吧。
+交流能产生灵感，努力可以使灵感变现。 ">
+<meta name="author" content="">
+<link rel="canonical" href="https://lslightly.github.io/blog/2022-03-21/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5c25c975546c048d1a5600aadb48425ae1bc921a9a18fe67d6955c9535260811.css" integrity="sha256-XCXJdVRsBI0aVgCq20hCWuG8khqaGP5n1pVclTUmCBE=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.acb54fd32bbc1982428b8850317e45d076b95012730a5936667e6bc21777692a.js" integrity="sha256-rLVP0yu8GYJCi4hQMX5F0Ha5UBJzClk2Zn5rwhd3aSo="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://lslightly.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://lslightly.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://lslightly.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://lslightly.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://lslightly.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="ffi-go 组会心得" />
+<meta property="og:description" content="ffi-go 组会心得 这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。
+今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。
+首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I&rsquo;m trivial。
+然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊&hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。
+另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。
+正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。
+就写这么多吧。
+交流能产生灵感，努力可以使灵感变现。 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://lslightly.github.io/blog/2022-03-21/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2022-03-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2022-03-21T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ffi-go 组会心得"/>
+<meta name="twitter:description" content="ffi-go 组会心得 这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。
+今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。
+首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I&rsquo;m trivial。
+然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊&hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。
+另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。
+正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。
+就写这么多吧。
+交流能产生灵感，努力可以使灵感变现。 "/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Blogs",
+      "item": "https://lslightly.github.io/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "ffi-go 组会心得",
+      "item": "https://lslightly.github.io/blog/2022-03-21/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ffi-go 组会心得",
+  "name": "ffi-go 组会心得",
+  "description": "ffi-go 组会心得 这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。\n今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。\n首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I\u0026rsquo;m trivial。\n然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊\u0026hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。\n另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。\n正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。\n就写这么多吧。\n交流能产生灵感，努力可以使灵感变现。 ",
+  "keywords": [
+    
+  ],
+  "articleBody": "ffi-go 组会心得 这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。\n今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。\n首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I’m trivial。\n然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊…另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。\n另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。\n正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。\n就写这么多吧。\n交流能产生灵感，努力可以使灵感变现。 ",
+  "wordCount" : "12",
+  "inLanguage": "en",
+  "datePublished": "2022-03-21T00:00:00Z",
+  "dateModified": "2022-03-21T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://lslightly.github.io/blog/2022-03-21/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Lslightly Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://lslightly.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://lslightly.github.io" accesskey="h" title="Lslightly Blog (Alt + H)">Lslightly Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      ffi-go 组会心得
+    </h1>
+    <div class="post-meta"><span title='2022-03-21 00:00:00 +0000 UTC'>March 21, 2022</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="ffi-go-组会心得">ffi-go 组会心得<a hidden class="anchor" aria-hidden="true" href="#ffi-go-组会心得">#</a></h1>
+<p>这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。</p>
+<p>今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。</p>
+<p>首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I&rsquo;m trivial。</p>
+<p>然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊&hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。</p>
+<p>另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。</p>
+<p>正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。</p>
+<p>就写这么多吧。</p>
+<h2 id="交流能产生灵感努力可以使灵感变现">交流能产生灵感，努力可以使灵感变现。<a hidden class="anchor" aria-hidden="true" href="#交流能产生灵感努力可以使灵感变现">#</a></h2>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://lslightly.github.io">Lslightly Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

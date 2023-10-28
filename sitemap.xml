@@ -2,28 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://Lslightly.github.io/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
-    <priority>0</priority>
+    <loc>https://lslightly.github.io/blog/</loc>
+    <lastmod>2023-10-28T21:28:54+08:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/blog/researches/posts/2022-03-22/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
+    <loc>https://lslightly.github.io/</loc>
+    <lastmod>2023-10-28T21:28:54+08:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/blog/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
+    <loc>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</loc>
+    <lastmod>2023-10-28T21:28:54+08:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/tags/meetings/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
+    <loc>https://lslightly.github.io/blog/2022-03-21/</loc>
+    <lastmod>2022-03-21T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/tags/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
+    <loc>https://lslightly.github.io/blog/start/</loc>
+    <lastmod>2021-10-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/blog/researches/posts/2021-10-14/</loc>
-    <lastmod>2021-10-14T22:10:30+08:00</lastmod>
+    <loc>https://lslightly.github.io/blog/2021-10-14/</loc>
+    <lastmod>2021-10-14T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://Lslightly.github.io/blog/researches/posts/start/</loc>
-    <lastmod>2021-10-14T22:08:42+08:00</lastmod>
+    <loc>https://lslightly.github.io/categories/</loc>
   </url><url>
-    <loc>https://Lslightly.github.io/categories/</loc>
+    <loc>https://lslightly.github.io/tags/</loc>
   </url>
 </urlset>
