@@ -4,23 +4,9 @@
     <title>Blogs on PaperMod</title>
     <link>https://lslightly.github.io/blog/</link>
     <description>Recent content in Blogs on PaperMod</description>
-    <image>
-      <title>PaperMod</title>
-      <url>https://lslightly.github.io/papermod-cover.png</url>
-      <link>https://lslightly.github.io/papermod-cover.png</link>
-    </image>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Oct 2023 21:28:54 +0800</lastBuildDate><atom:link href="https://lslightly.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>SSHFS服务器目录挂载至本地</title>
-      <link>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</link>
-      <pubDate>Sat, 28 Oct 2023 21:28:54 +0800</pubDate>
-      
-      <guid>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</guid>
-      <description>想法起因 解决方案 探寻过程 </description>
-    </item>
-    
+    <lastBuildDate>Mon, 21 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://lslightly.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ffi-go 组会心得</title>
       <link>https://lslightly.github.io/blog/2022-03-21/</link>
@@ -84,6 +70,16 @@
 发论文要有科研训练（举个栗子，讲个笑话，不要像现场那位小哥，xs，说自己发现了很厉害的算法要发高级会议，非要逮着院长问。我真的醉了，想必他发明的算法别人一眼就看透了，哎，承包了我一晚上的笑点）
 总结 说起来我可能都知道这些道理，但实际实践起来真是很难啊，有时候也想不到或者不注意这些点。总之收获还是蛮大的（感觉被灌了一大波鸡汤，但不像。这种会听一次感觉收获都挺大，啊这）
 回头看看如果有重要图片的话加上来</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://lslightly.github.io/blog/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3%E6%9C%AC%E5%9C%B0/</guid>
+      <description>#! https://zhuanlan.zhihu.com/p/663886871 +++ title = &amp;lsquo;SSHFS服务器目录挂载至Windows本地&amp;rsquo; date = 2023-10-28T21:28:54+08:00 draft = false +++
+想法起因 解决方案 探寻过程 </description>
     </item>
     
   </channel>
