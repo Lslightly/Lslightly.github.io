@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>平板JuiceSSH连接服务器 | Lslightly&#39;s Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="为什么使用JuiceSSH 原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。
+SpaceVim编辑总是出现q键 问题类似于neovim - vim over ssh: character q popping up - Ask Ubuntu
+解决方法见FAQ · neovim/neovim Wiki
+最好是在.vim/init.vim中添加set guicursor=。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。
+JuiceSSH平板外接键盘无法输入中文 起因 使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。
+解决方案 在平板设置&gt;系统和更新&gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。">
+<meta name="author" content="">
+<link rel="canonical" href="https://lslightly.github.io/blog/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.css" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.js" onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://lslightly.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://lslightly.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://lslightly.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://lslightly.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://lslightly.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="平板JuiceSSH连接服务器" />
+<meta property="og:description" content="为什么使用JuiceSSH 原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。
+SpaceVim编辑总是出现q键 问题类似于neovim - vim over ssh: character q popping up - Ask Ubuntu
+解决方法见FAQ · neovim/neovim Wiki
+最好是在.vim/init.vim中添加set guicursor=。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。
+JuiceSSH平板外接键盘无法输入中文 起因 使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。
+解决方案 在平板设置&gt;系统和更新&gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://lslightly.github.io/blog/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/" /><meta property="article:section" content="blog" />
+<meta property="article:published_time" content="2023-11-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-12T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="平板JuiceSSH连接服务器"/>
+<meta name="twitter:description" content="为什么使用JuiceSSH 原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。
+SpaceVim编辑总是出现q键 问题类似于neovim - vim over ssh: character q popping up - Ask Ubuntu
+解决方法见FAQ · neovim/neovim Wiki
+最好是在.vim/init.vim中添加set guicursor=。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。
+JuiceSSH平板外接键盘无法输入中文 起因 使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。
+解决方案 在平板设置&gt;系统和更新&gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Blogs",
+      "item": "https://lslightly.github.io/blog/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  3 ,
+      "name": "平板JuiceSSH连接服务器",
+      "item": "https://lslightly.github.io/blog/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "平板JuiceSSH连接服务器",
+  "name": "平板JuiceSSH连接服务器",
+  "description": "为什么使用JuiceSSH 原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。\nSpaceVim编辑总是出现q键 问题类似于neovim - vim over ssh: character q popping up - Ask Ubuntu\n解决方法见FAQ · neovim/neovim Wiki\n最好是在.vim/init.vim中添加set guicursor=。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。\nJuiceSSH平板外接键盘无法输入中文 起因 使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。\n解决方案 在平板设置\u0026gt;系统和更新\u0026gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。",
+  "keywords": [
+    
+  ],
+  "articleBody": "为什么使用JuiceSSH 原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。\nSpaceVim编辑总是出现q键 问题类似于neovim - vim over ssh: character q popping up - Ask Ubuntu\n解决方法见FAQ · neovim/neovim Wiki\n最好是在.vim/init.vim中添加set guicursor=。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。\nJuiceSSH平板外接键盘无法输入中文 起因 使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。\n解决方案 在平板设置\u003e系统和更新\u003e语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。\n",
+  "wordCount" : "29",
+  "inLanguage": "en",
+  "datePublished": "2023-11-12T00:00:00Z",
+  "dateModified": "2023-11-12T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://lslightly.github.io/blog/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Lslightly's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://lslightly.github.io/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://lslightly.github.io" accesskey="h" title="Lslightly&#39;s Blog (Alt + H)">Lslightly&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      平板JuiceSSH连接服务器
+    </h1>
+    <div class="post-meta"><span title='2023-11-12 00:00:00 +0000 UTC'>November 12, 2023</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="为什么使用juicessh">为什么使用JuiceSSH<a hidden class="anchor" aria-hidden="true" href="#为什么使用juicessh">#</a></h1>
+<p>原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。</p>
+<h1 id="spacevim编辑总是出现q键">SpaceVim编辑总是出现q键<a hidden class="anchor" aria-hidden="true" href="#spacevim编辑总是出现q键">#</a></h1>
+<p>问题类似于<a href="https://askubuntu.com/questions/1001401/vim-over-ssh-character-q-popping-up">neovim - vim over ssh: character q popping up - Ask Ubuntu</a></p>
+<p>解决方法见<a href="https://github.com/neovim/neovim/wiki/FAQ#nvim-shows-weird-symbols-2-q-when-changing-modes">FAQ · neovim/neovim Wiki</a></p>
+<p>最好是在<code>.vim/init.vim</code>中添加<code>set guicursor=</code>。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。</p>
+<h1 id="juicessh平板外接键盘无法输入中文">JuiceSSH平板外接键盘无法输入中文<a hidden class="anchor" aria-hidden="true" href="#juicessh平板外接键盘无法输入中文">#</a></h1>
+<h2 id="起因">起因<a hidden class="anchor" aria-hidden="true" href="#起因">#</a></h2>
+<p>使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。</p>
+<h2 id="解决方案">解决方案<a hidden class="anchor" aria-hidden="true" href="#解决方案">#</a></h2>
+<p>在平板设置&gt;系统和更新&gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://lslightly.github.io">Lslightly&#39;s Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
