@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Lslightly's Blog</title><link>https://lslightly.github.io/</link><description>Recent content on Lslightly's Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 30 Mar 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://lslightly.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>paper-reading</title><link>https://lslightly.github.io/p/paper-reading/</link><pubDate>Sun, 30 Mar 2025 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/paper-reading/</guid><description>&lt;p>paper fast read.&lt;/p></description></item><item><title>平板JuiceSSH连接服务器</title><link>https://lslightly.github.io/p/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/</link><pubDate>Sun, 12 Nov 2023 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/%E5%B9%B3%E6%9D%BFjuicessh%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid><description>&lt;h1 id="为什么使用juicessh">为什么使用JuiceSSH
+&lt;/h1>&lt;p>原本使用termux连接服务器，但是termux不支持中文输入，找了很多网站，发现都是安卓键盘Layout的问题，没有中文布局。但是由于我只需要连服务器（平板能有啥性能，而且架构还是arm），因此ssh工具也是备选的，因此就看中了JuiceSSH。体验下来确实不错，支持xterm-256 color，稳定性也不错，可以后台运行而不会像termux一样一段时间ssh进程就退出了。&lt;/p>
+&lt;h1 id="spacevim编辑总是出现q键">SpaceVim编辑总是出现q键
+&lt;/h1>&lt;p>问题类似于&lt;a class="link" href="https://askubuntu.com/questions/1001401/vim-over-ssh-character-q-popping-up" target="_blank" rel="noopener"
+>neovim - vim over ssh: character q popping up - Ask Ubuntu&lt;/a>&lt;/p>
+&lt;p>解决方法见&lt;a class="link" href="https://github.com/neovim/neovim/wiki/FAQ#nvim-shows-weird-symbols-2-q-when-changing-modes" target="_blank" rel="noopener"
+>FAQ · neovim/neovim Wiki&lt;/a>&lt;/p>
+&lt;p>最好是在&lt;code>.vim/init.vim&lt;/code>中添加&lt;code>set guicursor=&lt;/code>。这样对于其他ssh终端的问题也能解决。显然在JuiceSSH里面用除了xterm-256 color的终端模拟器是会降低体验的。&lt;/p>
+&lt;h1 id="juicessh平板外接键盘无法输入中文">JuiceSSH平板外接键盘无法输入中文
+&lt;/h1>&lt;h2 id="起因">起因
+&lt;/h2>&lt;p>使用JuiceSSH在荣耀v7pro中连接服务器，同时使用外接键盘，突然发现无法输入中文。&lt;/p>
+&lt;h2 id="解决方案">解决方案
+&lt;/h2>&lt;p>在平板设置&amp;gt;系统和更新&amp;gt;语言和输入法 中将“安全输入”关闭即可。推测平板是将JuiceSSH终端作为一个需要安全保护措施的输入框了。&lt;/p></description></item><item><title>SSHFS服务器目录挂载至Windows本地</title><link>https://lslightly.github.io/p/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3windows%E6%9C%AC%E5%9C%B0/</link><pubDate>Sat, 28 Oct 2023 21:28:54 +0800</pubDate><guid>https://lslightly.github.io/p/sshfs%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%AE%E5%BD%95%E6%8C%82%E8%BD%BD%E8%87%B3windows%E6%9C%AC%E5%9C%B0/</guid><description>&lt;h2 id="概述">概述
+&lt;/h2>&lt;p>本篇文章主要是说明如何在win11环境下使用sshfs将服务器目录挂载到本地磁盘，方便在本地创建和编辑服务器文件。&lt;/p>
+&lt;h2 id="想法起因">想法起因
+&lt;/h2>&lt;p>在服务器上编写markdown文档，由于需要结果截图，所以就需要在windows下进行截图，然后保存到windows下的某个目录，然后再从这个目录将图片通过vscode拷贝到服务器下。显然这里有两次写操作。除此之外，还需要考虑在windows下将文件保存在哪个目录下。最后还可能需要手动删除这个文件。这种多出来的不必要的小文件就很令人心烦。&lt;/p>
+&lt;p>对于wsl中，可以通过windows的资源管理器直接访问wsl中的目录，十分的方便，因此希望能够通过某种方式能够在windows的资源管理器中直接访问服务器目录。回到最开始的场景，直接将截图保存到服务器目录下即可。&lt;/p>
+&lt;p>这个想法另外解决的场景是：当需要下载某个东西到服务器中时，我们一般来说需要获取被下载文件的链接，然后通过&lt;code>curl&lt;/code>或者&lt;code>wget&lt;/code>下载。但是存在某些情况我们无法简单获取链接（比如通过按钮响应方式返回一个url然后再进行下载的情况），此时我们就只能下载到本地然后再转移到服务器中。对于这种情况，在sshfs的解决方案下，我们就可以直接将被下载文件保存到服务器中。不过一个坏处是下载文件走的链路仍然是被下载文件的服务器-&amp;gt;本机-&amp;gt;服务器，仍然没有解决速度（由于文件不是直达）的问题，但是它解决了我们需要等待下载完成然后再拷贝的时间浪费。&lt;/p>
+&lt;h2 id="解决方案">解决方案
+&lt;/h2>&lt;ol>
+&lt;li>下载&lt;a class="link" href="https://github.com/winfsp/winfsp/releases" target="_blank" rel="noopener"
+>winfsp安装包&lt;/a>和&lt;a class="link" href="https://github.com/winfsp/sshfs-win/releases" target="_blank" rel="noopener"
+>sshfs-win安装包&lt;/a>。可以使用&lt;code>winget&lt;/code>下载&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-powershell" data-lang="powershell">&lt;span class="line">&lt;span class="cl">&lt;span class="n">winget&lt;/span> &lt;span class="n">install&lt;/span> &lt;span class="n">-h&lt;/span> &lt;span class="n">-e&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="n">-id&lt;/span> &lt;span class="s2">&amp;#34;WinFsp.WinFsp&amp;#34;&lt;/span> &lt;span class="p">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">winget&lt;/span> &lt;span class="n">install&lt;/span> &lt;span class="n">-h&lt;/span> &lt;span class="n">-e&lt;/span> &lt;span class="p">-&lt;/span>&lt;span class="n">-id&lt;/span> &lt;span class="s2">&amp;#34;SSHFS-Win.SSHFS-Win&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>下载&lt;a class="link" href="https://github.com/mhogomchungu/sirikali/releases/" target="_blank" rel="noopener"
+>sirikali GUI前端&lt;/a>&lt;/li>
+&lt;li>下载GUI前端并完成安装后，可以在右下角Menu中设置语言为中文。&lt;/li>
+&lt;li>然后创建卷，选择sshfs&lt;/li>
+&lt;li>将服务器地址，端口号和私钥（如果有）进行设置，选择自动挂载卷。然后点击添加&lt;/li>
+&lt;li>在我的收藏中选中刚刚添加的路径，连接即可。&lt;/li>
+&lt;/ol>
+&lt;h2 id="探寻过程">探寻过程
+&lt;/h2>&lt;p>在&lt;a class="link" href="https://zhuanlan.zhihu.com/p/314245985" target="_blank" rel="noopener"
+>Windows 下使用 SSHFS 通过 SSH 协议挂载远程服务器目录 - 知乎&lt;/a>中提到使用&lt;a class="link" href="https://github.com/evsar3/sshfs-win-manager" target="_blank" rel="noopener"
+>evsar3/sshfs-win-manager: A GUI for SSHFS-Win (https://github.com/billziss-gh/sshfs-win)&lt;/a>，但是这个项目太老了，导致其使用的sshfs和ssh版本较老，会出现如下情况，在此记录。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Bad owner or permissions on /cygdrive/c/Users/Administrator/.ssh/config
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>Markdown Syntax Guide</title><link>https://lslightly.github.io/p/markdown-syntax-guide/</link><pubDate>Thu, 07 Sep 2023 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/markdown-syntax-guide/</guid><description>&lt;p>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.&lt;/p>
+&lt;h2 id="headings">Headings
+&lt;/h2>&lt;p>The following HTML &lt;code>&amp;lt;h1&amp;gt;&lt;/code>—&lt;code>&amp;lt;h6&amp;gt;&lt;/code> elements represent six levels of section headings. &lt;code>&amp;lt;h1&amp;gt;&lt;/code> is the highest section level while &lt;code>&amp;lt;h6&amp;gt;&lt;/code> is the lowest.&lt;/p>
+&lt;h1 id="h1">H1
+&lt;/h1>&lt;h2 id="h2">H2
+&lt;/h2>&lt;h3 id="h3">H3
+&lt;/h3>&lt;h4 id="h4">H4
+&lt;/h4>&lt;h5 id="h5">H5
+&lt;/h5>&lt;h6 id="h6">H6
+&lt;/h6>&lt;h2 id="paragraph">Paragraph
+&lt;/h2>&lt;p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.&lt;/p>
+&lt;p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.&lt;/p>
+&lt;h2 id="blockquotes">Blockquotes
+&lt;/h2>&lt;p>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a &lt;code>footer&lt;/code> or &lt;code>cite&lt;/code> element, and optionally with in-line changes such as annotations and abbreviations.&lt;/p>
+&lt;h3 id="blockquote-without-attribution">Blockquote without attribution
+&lt;/h3>&lt;blockquote>
+&lt;p>Tiam, ad mint andaepu dandae nostion secatur sequo quae.
+&lt;strong>Note&lt;/strong> that you can use &lt;em>Markdown syntax&lt;/em> within a blockquote.&lt;/p>&lt;/blockquote>
+&lt;h3 id="blockquote-with-attribution">Blockquote with attribution
+&lt;/h3>&lt;blockquote>
+&lt;p>Don&amp;rsquo;t communicate by sharing memory, share memory by communicating.&lt;br>
+— &lt;cite>Rob Pike&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/cite>&lt;/p>&lt;/blockquote>
+&lt;h2 id="tables">Tables
+&lt;/h2>&lt;p>Tables aren&amp;rsquo;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Name&lt;/th>
+&lt;th>Age&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Bob&lt;/td>
+&lt;td>27&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Alice&lt;/td>
+&lt;td>23&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="inline-markdown-within-tables">Inline Markdown within tables
+&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Italics&lt;/th>
+&lt;th>Bold&lt;/th>
+&lt;th>Code&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;em>italics&lt;/em>&lt;/td>
+&lt;td>&lt;strong>bold&lt;/strong>&lt;/td>
+&lt;td>&lt;code>code&lt;/code>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>A&lt;/th>
+&lt;th>B&lt;/th>
+&lt;th>C&lt;/th>
+&lt;th>D&lt;/th>
+&lt;th>E&lt;/th>
+&lt;th>F&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/td>
+&lt;td>Phasellus ultricies, sapien non euismod aliquam, dui ligula tincidunt odio, at accumsan nulla sapien eget ex.&lt;/td>
+&lt;td>Proin eleifend dictum ipsum, non euismod ipsum pulvinar et. Vivamus sollicitudin, quam in pulvinar aliquam, metus elit pretium purus&lt;/td>
+&lt;td>Proin sit amet velit nec enim imperdiet vehicula.&lt;/td>
+&lt;td>Ut bibendum vestibulum quam, eu egestas turpis gravida nec&lt;/td>
+&lt;td>Sed scelerisque nec turpis vel viverra. Vivamus vitae pretium sapien&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="code-blocks">Code Blocks
+&lt;/h2>&lt;h3 id="code-block-with-backticks">Code block with backticks
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&amp;lt;!doctype html&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">html&lt;/span> &lt;span class="na">lang&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;en&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">meta&lt;/span> &lt;span class="na">charset&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">&amp;#34;utf-8&amp;#34;&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Example HTML5 Document&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">title&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">head&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>Test&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">body&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">html&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="code-block-indented-with-four-spaces">Code block indented with four spaces
+&lt;/h3>&lt;pre>&lt;code>&amp;lt;!doctype html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+&amp;lt;title&amp;gt;Example HTML5 Document&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;p&amp;gt;Test&amp;lt;/p&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h3 id="diff-code-block">Diff code block
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-diff" data-lang="diff">&lt;span class="line">&lt;span class="cl">[dependencies.bevy]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git = &amp;#34;https://github.com/bevyengine/bevy&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rev = &amp;#34;11f52b8c72fc3a568e8bb4a4cd1f3eb025ac2e13&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gd">- features = [&amp;#34;dynamic&amp;#34;]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="gd">&lt;/span>&lt;span class="gi">+ features = [&amp;#34;jpeg&amp;#34;, &amp;#34;dynamic&amp;#34;]
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="one-line-code-block">One line code block
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-html" data-lang="html">&lt;span class="line">&lt;span class="cl">&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>A paragraph&lt;span class="p">&amp;lt;/&lt;/span>&lt;span class="nt">p&lt;/span>&lt;span class="p">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="list-types">List Types
+&lt;/h2>&lt;h3 id="ordered-list">Ordered List
+&lt;/h3>&lt;ol>
+&lt;li>First item&lt;/li>
+&lt;li>Second item&lt;/li>
+&lt;li>Third item&lt;/li>
+&lt;/ol>
+&lt;h3 id="unordered-list">Unordered List
+&lt;/h3>&lt;ul>
+&lt;li>List item&lt;/li>
+&lt;li>Another item&lt;/li>
+&lt;li>And another item&lt;/li>
+&lt;/ul>
+&lt;h3 id="nested-list">Nested list
+&lt;/h3>&lt;ul>
+&lt;li>Fruit
+&lt;ul>
+&lt;li>Apple&lt;/li>
+&lt;li>Orange&lt;/li>
+&lt;li>Banana&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Dairy
+&lt;ul>
+&lt;li>Milk&lt;/li>
+&lt;li>Cheese&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="other-elements--abbr-sub-sup-kbd-mark">Other Elements — abbr, sub, sup, kbd, mark
+&lt;/h2>&lt;p>&lt;abbr title="Graphics Interchange Format">GIF&lt;/abbr> is a bitmap image format.&lt;/p>
+&lt;p>H&lt;sub>2&lt;/sub>O&lt;/p>
+&lt;p>X&lt;sup>n&lt;/sup> + Y&lt;sup>n&lt;/sup> = Z&lt;sup>n&lt;/sup>&lt;/p>
+&lt;p>Press &lt;kbd>CTRL&lt;/kbd> + &lt;kbd>ALT&lt;/kbd> + &lt;kbd>Delete&lt;/kbd> to end the session.&lt;/p>
+&lt;p>Most &lt;mark>salamanders&lt;/mark> are nocturnal, and hunt for insects, worms, and other small creatures.&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>The above quote is excerpted from Rob Pike&amp;rsquo;s &lt;a class="link" href="https://www.youtube.com/watch?v=PAAkCSZUG1c" target="_blank" rel="noopener"
+>talk&lt;/a> during Gopherfest, November 18, 2015.&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Image gallery</title><link>https://lslightly.github.io/p/image-gallery/</link><pubDate>Sat, 26 Aug 2023 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/image-gallery/</guid><description>&lt;img src="https://lslightly.github.io/p/image-gallery/2.jpg" alt="Featured image of post Image gallery" />&lt;p>Hugo theme Stack supports the creation of interactive image galleries using Markdown. It&amp;rsquo;s powered by &lt;a class="link" href="https://photoswipe.com/" target="_blank" rel="noopener"
+>PhotoSwipe&lt;/a> and its syntax was inspired by &lt;a class="link" href="https://typlog.com/" target="_blank" rel="noopener"
+>Typlog&lt;/a>.&lt;/p>
+&lt;p>To use this feature, the image must be in the same directory as the Markdown file, as it uses Hugo&amp;rsquo;s page bundle feature to read the dimensions of the image. &lt;strong>External images are not supported.&lt;/strong>&lt;/p>
+&lt;h2 id="syntax">Syntax
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">![&lt;span class="nt">Image 1&lt;/span>](&lt;span class="na">1.jpg&lt;/span>) ![&lt;span class="nt">Image 2&lt;/span>](&lt;span class="na">2.jpg&lt;/span>)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="result">Result
+&lt;/h2>&lt;p>&lt;img src="https://lslightly.github.io/p/image-gallery/1.jpg"
+width="2000"
+height="1400"
+srcset="https://lslightly.github.io/p/image-gallery/1_hu_811b671457ffff1f.jpg 480w, https://lslightly.github.io/p/image-gallery/1_hu_c74af69dd7c1dcda.jpg 1024w"
+loading="lazy"
+alt="Image 1"
+class="gallery-image"
+data-flex-grow="142"
+data-flex-basis="342px"
+> &lt;img src="https://lslightly.github.io/p/image-gallery/2.jpg"
+width="1500"
+height="2250"
+srcset="https://lslightly.github.io/p/image-gallery/2_hu_42f6436cb1637265.jpg 480w, https://lslightly.github.io/p/image-gallery/2_hu_27862a49608da0d9.jpg 1024w"
+loading="lazy"
+alt="Image 2"
+class="gallery-image"
+data-flex-grow="66"
+data-flex-basis="160px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@mymind" target="_blank" rel="noopener"
+>mymind&lt;/a> and &lt;a class="link" href="https://unsplash.com/@lukechesser" target="_blank" rel="noopener"
+>Luke Chesser&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>Shortcodes</title><link>https://lslightly.github.io/p/shortcodes/</link><pubDate>Fri, 25 Aug 2023 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/shortcodes/</guid><description>&lt;img src="https://lslightly.github.io/p/shortcodes/cover.jpg" alt="Featured image of post Shortcodes" />&lt;p>For more details, check out the &lt;a class="link" href="https://stack.jimmycai.com/writing/shortcodes" target="_blank" rel="noopener"
+>documentation&lt;/a>.&lt;/p>
+&lt;h2 id="bilibili-video">Bilibili video
+&lt;/h2>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1d4411N7zD"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;h2 id="tencent-video">Tencent video
+&lt;/h2>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://v.qq.com/txp/iframe/player.html?vid=g0014r3khdw&amp;auto=0"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;h2 id="youtube-video">YouTube video
+&lt;/h2>&lt;div class="video-wrapper">
+&lt;iframe loading="lazy"
+src="https://www.youtube.com/embed/0qwALOOvUik"
+allowfullscreen
+title="YouTube Video"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;h2 id="generic-video-file">Generic video file
+&lt;/h2>&lt;div class="video-wrapper">
+&lt;video
+controls
+src="https://www.w3schools.com/tags/movie.mp4"
+>
+&lt;p>
+Your browser doesn't support HTML5 video. Here is a
+&lt;a href="https://www.w3schools.com/tags/movie.mp4">link to the video&lt;/a> instead.
+&lt;/p>
+&lt;/video>
+&lt;/div>
+&lt;h2 id="gist">Gist
+&lt;/h2>&lt;script src="https://gist.github.com/CaiJimmy/e2751a943de10b2a5b3a8a6c2120cb86.js">&lt;/script>
+&lt;h2 id="gitlab">GitLab
+&lt;/h2>&lt;script
+type="application/javascript"
+src="https://gitlab.com/-/snippets/2589724.js"
+>&lt;/script>
+&lt;h2 id="quote">Quote
+&lt;/h2>&lt;blockquote>
+&lt;p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p>&lt;span class="cite">&lt;span>― &lt;/span>&lt;span>A famous person, &lt;/span>&lt;a href="https://en.wikipedia.org/wiki/Book">&lt;cite>The book they wrote&lt;/cite>&lt;/a>&lt;/span>&lt;/blockquote>
+&lt;hr>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@codioful" target="_blank" rel="noopener"
+>Codioful&lt;/a> on &lt;a class="link" href="https://unsplash.com/photos/WDSN62Qdxuk" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>Math Typesetting</title><link>https://lslightly.github.io/p/math-typesetting/</link><pubDate>Thu, 24 Aug 2023 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/math-typesetting/</guid><description>&lt;p>Stack has built-in support for math typesetting using &lt;a class="link" href="https://katex.org/" target="_blank" rel="noopener"
+>KaTeX&lt;/a>.&lt;/p>
+&lt;p>&lt;strong>It&amp;rsquo;s not enabled by default side-wide,&lt;/strong> but you can enable it for individual posts by adding &lt;code>math: true&lt;/code> to the front matter. Or you can enable it side-wide by adding &lt;code>math = true&lt;/code> to the &lt;code>params.article&lt;/code> section in &lt;code>config.toml&lt;/code>.&lt;/p>
+&lt;h2 id="inline-math">Inline math
+&lt;/h2>&lt;p>This is an inline mathematical expression: $\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…$&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">$\varphi = \dfrac{1+\sqrt5}{2}= 1.6180339887…$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="block-math">Block math
+&lt;/h2>$$
+\varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
+$$&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">$$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> \varphi = 1+\frac{1} {1+\frac{1} {1+\frac{1} {1+\cdots} } }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>$$
+f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
+$$&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-markdown" data-lang="markdown">&lt;span class="line">&lt;span class="cl">$$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> f(x) = \int_{-\infty}^\infty\hat f(\xi)\,e^{2 \pi i \xi x}\,d\xi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>ffi-go 组会心得</title><link>https://lslightly.github.io/p/ffi-go-%E7%BB%84%E4%BC%9A%E5%BF%83%E5%BE%97/</link><pubDate>Mon, 21 Mar 2022 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/ffi-go-%E7%BB%84%E4%BC%9A%E5%BF%83%E5%BE%97/</guid><description>&lt;h1 id="ffi-go-组会心得">ffi-go 组会心得
+&lt;/h1>&lt;p>这里不讨论相关技术问题，只是讨论一些虚的心得体会。主题是学会交流。&lt;/p>
+&lt;p>今天是一如既往的组会驱动式交流，实际上没有干多少活。原因一方面是自身没有驱动力，另一方面其实更本质的原因是缺乏交流，缺少对项目的理解。实际上缺少交流的问题已经暴露已久。因此今天开完组会好好地反思了一下自己过去因为缺少交流而导致的很多遗憾，也因此也想到说写这么一篇文章，希望能够在反思和写的过程中加深印象，改变自己。&lt;/p>
+&lt;p>首先问什么自身没有驱动力的本质原因之一是缺乏交流呢。其实在阅读GCatch大型源码的过程中就能发现自己花费了大量的时间却收获很少。实际上这是很令人头疼的一件事。类似的事情也发生在OSH大作业上，对于seL4这种大型工程，由于与老师缺乏交流，在阅读这种大型源码的时候就很容易让自己崩溃或者不耐烦，从而失去了兴趣。相反，在做go-callvis这种小型软件的时候，由于易懂，而且是能够可视化程序，因此我也就有了驱动力。另外寒假里本来就已经阅读了Anderson的pointer analysis论文，想到能够通过go-callvis来应用指针分析的结果就非常令人开心。另外在去年12月份的时候在阅读GCatch源码时也是非常头疼，当时就想能不能有什么可视化工具能够清晰的把调用关系找到，但是当时没有调研。今年3月份在和老师讨论调用图相关的事情时也才真正听老师说先去调研一下才发现原来github老早有了go-callvis的工具。也正是因为这次交流，才有了结合cgo的go-callvis。现在又到了迷茫的时候了，因为又涉及到新的领域，或者说边界，那就是将go和c的并发安全性结合cgo调用图来进行刻画和验证。正如张老师在会议中所讲的，老师在项目上的经验可以很好的指导我们推进项目。因此只有尽快把go和c的并发原语和specification等(当然这里通过我的描述就可以知道我并不知道该怎么进行，所以还是需要交流)通过并发图的方式展现出来，进而使用时序关系去检测安全性以及理解GCatch中的操作甚至突破GCatch的处理范围。当然这些都建立在和老师交流探讨的基础上，自己一个人做是肯定行不通的，因为I&amp;rsquo;m trivial。&lt;/p>
+&lt;p>然后回想起小时候去面试培训英语（是的，报培训班甚至还要面试，当时那个老师就说太腼腆，成不了才。现在看来确实是这样，没有交流，单打独斗真的是很难有所作为，在项目上其实就可以看出来（当然还需要自己的努力。然后回想到高中，英语很差，对于错题没有和老师去积极沟通，所以很多题一知半解。当然还有一个原因是自己不肯背单词了，虽然现在也是这样。还是要积极学英语啊&amp;hellip;另外在大学以来也是如此，交流的不够积极。可以看到当我和助教交流的比较积极时，我对课程的理解就相对深入，但是如果某个学期我和助教很少交流，另外请教同学也不能获得正确的解答的时候，很多情况下问题就得不到解决，就类似于项目无法推进。确实是这样的。因此还是需要多交流。&lt;/p>
+&lt;p>另外，在和国哥的交流也少，大二-大三的暑假偶然和国哥交流，才发现自己当时不应该去参加比赛，而是应该去学托福，考出托福然后看能否进行暑研等项目。实际上自己错失了很多机会，都是因为缺乏交流导致的。包括和老师，和学长。&lt;/p>
+&lt;p>正如张老师说的：“她很忙（实际上大家都是），不应该是她来找我们而是应该我们主动去找她”。虽然这句话是她对另一个学长说的，但是实际上我知道她也在对我说，毕竟我也是磨磨蹭蹭，组会驱动式进展啊。&lt;/p>
+&lt;p>就写这么多吧。&lt;/p>
+&lt;h2 id="交流能产生灵感努力可以使灵感变现">交流能产生灵感，努力可以使灵感变现。
+&lt;/h2></description></item><item><title>Archives</title><link>https://lslightly.github.io/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/archives/</guid><description/></item><item><title>博客动机</title><link>https://lslightly.github.io/p/%E5%8D%9A%E5%AE%A2%E5%8A%A8%E6%9C%BA/</link><pubDate>Thu, 14 Oct 2021 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/%E5%8D%9A%E5%AE%A2%E5%8A%A8%E6%9C%BA/</guid><description>&lt;h1 id="博客动机">博客动机
+&lt;/h1>&lt;p>首先是“我与院长面对面”的活动让我突然想记“亿”点东西，然后是看了一下Github Pages可以用Hugo写，然后感觉Golang用的很舒服，所以就想写了（哎，就是想尝试各种有趣的可视化fancy工具，视觉动物实锤了，连性能测试工具也想visualization）。啊……对了，还想记其他“亿”点东西，比如课程中学到的精妙的好东西，游戏攻略（王者，饥荒），生活领悟，项目经验（是时候展现真正的拉胯技术了），暂定就是这些吧，后面陆续更新（希望不要断更）&lt;/p>
+&lt;p>啊，还有就是看到别人写博客，我酸了，啊这，攀比心理开始作祟(doge)。写博客看上去会比较好玩&lt;/p></description></item><item><title>我与院长面对面</title><link>https://lslightly.github.io/p/%E6%88%91%E4%B8%8E%E9%99%A2%E9%95%BF%E9%9D%A2%E5%AF%B9%E9%9D%A2/</link><pubDate>Thu, 14 Oct 2021 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/p/%E6%88%91%E4%B8%8E%E9%99%A2%E9%95%BF%E9%9D%A2%E5%AF%B9%E9%9D%A2/</guid><description>&lt;h1 id="我与院长面对面">我与院长面对面
+&lt;/h1>&lt;blockquote>
+&lt;p>随便记录一点，作业比较多，临时起意说要写博客，也算第一次写，大三才开始（本菜属实了）
+主要现在也比较迷茫，这次活动收获还是比较多的，比较契合我现在的状态，所以写一点记录一下（也就是自己记得的一些，也许自己印象最深的就是吸收了的吧），免得第二天就忘记了（这种情况实在是太多了）&lt;/p>&lt;/blockquote>
+&lt;p>大致流程&lt;/p>
+&lt;p>最开始是李向阳院长讲自己的经历，真是大牛，无法仰仗的高度(什么全国几个人的数学班啦，什么20岁出国啦。)&lt;/p>
+&lt;p>然后是讲人生三个目标：国之栋梁、学术大咖、商界精英&lt;/p>
+&lt;p>接着是讲性格、兴趣等等导向的人生规划&lt;/p>
+&lt;p>还记得的是pdp和MBTI，具体网站百度一下&lt;/p>
+&lt;p>最后讲了科研的一些东西&lt;/p>
+&lt;h2 id="院长经历">院长经历
+&lt;/h2>&lt;p>一个字——牛&lt;/p>
+&lt;p>两个字——很牛&lt;/p>
+&lt;p>三个字——非常牛&lt;/p>
+&lt;p>(狗头)&lt;/p>
+&lt;p>反正凡人无法企及&lt;/p>
+&lt;p>不过有句话是真的，接受平凡的生活&lt;/p>
+&lt;p>归根到底都是平凡不平庸，不消极&lt;/p>
+&lt;h2 id="生涯规划主要是性格测试兴趣导向和其他的一些东西">生涯规划(主要是性格测试、兴趣导向和其他的一些东西)
+&lt;/h2>&lt;p>中间讲到了说人生最大的幸福是做好自己&lt;/p>
+&lt;p>想来我在他PPT上列的各种心理我都有：嫉妒、攀比等等&lt;/p>
+&lt;p>不过我也一直知道说要做好自己就可以了（不，你不知道，doge）&lt;/p>
+&lt;p>然后是说性格测试、兴趣导向的规划&lt;/p>
+&lt;p>还有规划越清晰，工资一般来说就更高（确实如此，毕竟是跟踪调查，但是实际上这个很难说清楚）&lt;/p>
+&lt;h2 id="科研">科研
+&lt;/h2>&lt;p>及早进实验室（虽然我已然是大三了）&lt;/p>
+&lt;p>在组内要体现自己的价值，要抱大腿，首先要让大腿认识到自己的价值（哎，感觉自己大创项目动力不足啊，老想着玩游戏呢）&lt;/p>
+&lt;p>套磁需要了解老师，需要读老师的paper，需要介绍自己做了什么，不要使用模板，不要群发，不要泛&lt;/p>
+&lt;p>科研动机要认真，纯粹，真的要感兴趣，肯吃苦（我有预想过睡实验室这种人，但是没体验过真不好说，因为是高强度输入与输出，像我这种想一道题就能想个两三小时的摸鱼人员就算了）才能做的好&lt;/p>
+&lt;p>导师有两种类型，一种是放手让学生做，一种是手把手教学&lt;/p>
+&lt;p>放手让学生做，做的好的非常厉害&lt;/p>
+&lt;p>手把手教学可能对科研的整体过程了解的其实不是特别透彻，能力可能不如前一种好&lt;/p>
+&lt;p>多尝试不同老师的style，选择适合自己的。要和老师契合，能够多聊天&lt;/p>
+&lt;p>要主动，有自己的想法&lt;/p>
+&lt;p>发论文要有科研训练（举个栗子，讲个笑话，不要像现场那位小哥，xs，说自己发现了很厉害的算法要发高级会议，非要逮着院长问。我真的醉了，想必他发明的算法别人一眼就看透了，哎，承包了我一晚上的笑点）&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>说起来我可能都知道这些道理，但实际实践起来真是很难啊，有时候也想不到或者不注意这些点。总之收获还是蛮大的（感觉被灌了一大波鸡汤，但不像。这种会听一次感觉收获都挺大，啊这）&lt;/p>
+&lt;p>回头看看如果有重要图片的话加上来&lt;/p></description></item><item><title>Links</title><link>https://lslightly.github.io/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/links/</guid><description>&lt;p>To use this feature, add &lt;code>links&lt;/code> section to frontmatter.&lt;/p>
+&lt;p>This page&amp;rsquo;s frontmatter:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">links&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GitHub is the world&amp;#39;s largest software development platform.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">title&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">website&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">https://www.typescriptlang.org&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ts-logo-128.jpg&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>image&lt;/code> field accepts both local and external images.&lt;/p></description></item><item><title>Search</title><link>https://lslightly.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://lslightly.github.io/search/</guid><description/></item></channel></rss>
