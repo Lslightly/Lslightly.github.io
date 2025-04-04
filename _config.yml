@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: Lslightly's Universe
 subtitle: ''
-description: ''
-keywords:
-author: John Doe
+description: Lslightly's Universe
+keywords: CS, Research, Life
+author: Lslightly
 language: en
-timezone: ''
+timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
