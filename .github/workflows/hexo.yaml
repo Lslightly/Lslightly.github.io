@@ -42,12 +42,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
+      - name: Install pandoc
+        uses: pandoc/actions/setup@v1
       - name: Install Dependencies
         run: npm install
       - name: Build with Hexo
         run: npx hexo g
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: ./public
 
