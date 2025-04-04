@@ -124,3 +124,19 @@ feed:
   type: atom
   path: atom.xml
   limit: 20  # 每次显示的文章数量
+
+algolia:
+  appId: "NLI8R2XM6O"
+  apiKey: "619dbc45672ec8ba4055d9f1b21437f0"
+  adminApiKey: "77d888f3f4a3b3cbb7f9a0ebb48f8ce8"
+  indexName: "blog"
+  chunkSize: 5000
+  fields:
+    - content:strip:truncate,0,500
+    - excerpt:strip
+    - gallery
+    - permalink
+    - photos
+    - slug
+    - tags
+    - title
