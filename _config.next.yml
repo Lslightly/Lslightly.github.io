@@ -104,7 +104,7 @@ menu:
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   # sitemap: /sitemap.xml || fa fa-sitemap
-  commonweal: /404/ || fa fa-heartbeat
+  # commonweal: /404/ || fa fa-heartbeat
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -162,6 +162,7 @@ social:
   E-Mail: mailto:lqw332664203@mail.ustc.edu.cn || fa fa-envelope
   Bilibili: https://space.bilibili.com/481749345 || fab fa-bilibili
   Zhihu: https://www.zhihu.com/people/xiao-li-fei-dao-76-37 || fab fa-zhihu
+  RSS: /atom.xml || fa fa-rss
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
@@ -289,8 +290,8 @@ follow_me:
   #Telegram: https://t.me/channel_name || fab fa-telegram
   #WeChat: /images/wechat_channel.png || fab fa-weixin
   # RSS: /atom.xml || fa fa-rss
-  Bilibili: https://space.bilibili.com/481749345 || fab fa-bilibili
-  Zhihu: https://www.zhihu.com/people/xiao-li-fei-dao-76-37 || fab fa-zhihu
+  # Bilibili: https://space.bilibili.com/481749345 || fab fa-bilibili
+  # Zhihu: https://www.zhihu.com/people/xiao-li-fei-dao-76-37 || fab fa-zhihu
 
 # Related popular posts
 # Dependencies: https://github.com/sergeyzwezdin/hexo-related-posts
