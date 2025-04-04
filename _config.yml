@@ -4,16 +4,16 @@
 
 # Site
 title: Lslightly's Universe
-subtitle: ''
+subtitle: A place to share my thoughts
 description: Lslightly's Universe
 keywords: CS, Research, Life
 author: Lslightly
-language: en
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: http://Lslightly.github.io
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -45,12 +45,16 @@ relative_link: false
 future: true
 syntax_highlighter: highlight.js
 highlight:
+  enable: true
   line_number: true
   auto_detect: false
   tab_replace: ''
   wrap: true
   hljs: false
+  exclude_languages: # mermaid support
+    - mermaid
 prismjs:
+  enable: false
   preprocess: true
   line_number: true
   tab_replace: ''
@@ -89,14 +93,25 @@ pagination_dir: page
 
 # Include / Exclude file(s)
 ## include:/exclude: options only apply to the 'source/' folder
-include:
-exclude:
-ignore:
+# include:
+# exclude:
+# ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: next
+
+# hexo-word-counter
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+
+# hexo-related-posts
+related_posts:
+  enable: true
+
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
