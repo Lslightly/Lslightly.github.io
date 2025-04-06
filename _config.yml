@@ -131,3 +131,10 @@ search:
   field: post
   content: true
   format: html
+
+sitemap:
+  path:
+    - /sitemap.xml
+    - /sitemap.txt
+  tags: true
+  categories: false
