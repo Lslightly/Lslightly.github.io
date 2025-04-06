@@ -32,6 +32,7 @@ Programming Languages:
   - JavaScript
   - TypeScript
   - Java
+  - Lean4
 
 - Known parts of CS(green hand):
   - Compiler(traditional)
