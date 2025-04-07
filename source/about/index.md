@@ -63,12 +63,12 @@ Programming Languages:
 
 ## MyStory
 
-![](https://github-readme-stats.vercel.app/api/wakatime?username=Lslightly\&layout=compact)
+[![](https://github-readme-stats.vercel.app/api/wakatime?username=Lslightly\&layout=compact)](https://wakatime.com/@Lslightly)
 
 After graduation, I got emo because I thought I didn't find my value. But actually it was there: trying new things and some practical tools.
 
 ![](story.svg)
 
-See my github profile if you like. I am also learning courses at [Lslightly-courses](https://github.com/Lslightly-courses).
+If you like, see my github [profile](https://github.com/Lslightly) and [resume](https://github.com/Lslightly/resume), which is promising to be enriched. I am also learning courses at [Lslightly-courses](https://github.com/Lslightly-courses).
 
 <div class="text-center">{% btn https://github.com/Lslightly, GitHub, fab fa-github fa-fw fa-lg, GitHub %}</div>
