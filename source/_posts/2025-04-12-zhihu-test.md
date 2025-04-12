@@ -57,7 +57,7 @@ annotation [^1]
 
 image
 
-![](../images/apple-touch-icon.png)
+{% img /images/apple-touch-icon.png %}
 
 math: inline $e^{\pi i} + 1 = 0$
 

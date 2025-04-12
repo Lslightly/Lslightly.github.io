@@ -100,3 +100,9 @@ a &= b + c \\
 \end{aligned}
 \end{equation}
 $$
+
+## Post Link
+
+Link to [About Me](/about)
+
+Link to {% post_link 2025-04-12-zhihu-test %}
