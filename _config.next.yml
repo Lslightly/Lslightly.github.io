@@ -102,7 +102,7 @@ menu:
   about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   # categories: /categories/ || fa fa-th
-  Books: /books/ || fa-solid fa-book-open
+  Life: /life/ || fa-solid fa-book-open
   Math: /math/ || fa-solid fa-infinity
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar

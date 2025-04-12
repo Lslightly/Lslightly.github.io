@@ -1,7 +1,9 @@
 ---
 title: USTC CS PLSE 历史(2017-2023)的个人视角
 date: 2025-04-09
-tags: ustc
+tags:
+    - USTC
+    - PL
 ---
 
 > 今天早上背单词（是的，你没看错，我还在背单词，而且用的还是欧路词典）的时候看到了一句话：
@@ -21,6 +23,8 @@ tags: ustc
 > {% pdf /assets/undergraduate.pdf %}
 > 
 > No Programming, No Experience, No Choices. 直到现在，我也不敢说我对什么东西特别感兴趣。花费了大量的时间在自己摸索不太现代的课程和自己内耗上，真就是应了 [正确地浪费剩下的时间](https://survivesjtu.gitbook.io/survivesjtumanual/li-zhi-pian/zheng-que-di-lang-fei-sheng-xia-de-shi-jian) 中的“有些同学”了。[rainoftime](https://github.com/rainoftime) 曾在 ChinaSoft2024上说过，多coding，从coding中发现问题。是这样的，兴趣也是从coding中产生的（当然也有条件了，需要自己主动保护兴趣的火焰，需要有足够的韧劲，需要总是思考和搜索如何破解困难）。
+>
+> 160个学分是合格线，但不是优秀线。评价指标是约束，不是促进学习的东西。任何时候评价指标都是lower bound而不是upper bound。如果160个学分里面再水几个学分（指无法获得新的认识，而不是说水一些慕课），那真是更拉胯了。
 
 Anyway，下面吐槽一下课程。
 
