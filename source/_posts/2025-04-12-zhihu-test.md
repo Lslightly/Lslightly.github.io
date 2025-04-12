@@ -8,7 +8,7 @@ mathjax: true
 
 <!-- more -->
 
-[源码链接](https://github.com/Lslightly/Lslightly.github.io/source/_posts/2025-04-12-zhihu-test.md).
+[源码链接](https://github.com/Lslightly/Lslightly.github.io/blob/bfe45667adbdd03541641e0d70913a800ab52767/source/_posts/2025-04-12-zhihu-test.md).
 
 
 # 一级标题
@@ -16,6 +16,8 @@ mathjax: true
 ## 二级标题
 
 **加粗**, _斜体_
+
+> 哦，这就是markdown导入对列表的处理吗😂
 
 1. 1
    1. 1.1
@@ -34,13 +36,20 @@ mathjax: true
 
 > quote
 
+
 > quote
->
+> 
 > the last line is empty
 
 ---
 
-test markdown link
+```go
+func main() {
+   fmt.Println("Hello, World")
+}
+```
+
+markdown link:
 
 [1], [baidu](https://www.baidu.com)
 
