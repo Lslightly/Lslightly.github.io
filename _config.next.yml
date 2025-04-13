@@ -96,13 +96,13 @@ open_graph:
 # Key is the name of menu item. If the translation for this item is available, the translated text will be loaded, otherwise the Key name will be used. Key is case-sensitive.
 # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
 # External url should start with http:// or https://
-# See 
+# See https://fontawesome.com/
 menu:
   home: / || fa fa-home
   about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   # categories: /categories/ || fa fa-th
-  Life: /life/ || fa-solid fa-book-open
+  Books: /books/ || fa-solid fa-book-open
   Math: /math/ || fa-solid fa-infinity
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
