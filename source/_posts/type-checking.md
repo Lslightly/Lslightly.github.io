@@ -1,5 +1,8 @@
 ---
 title: 一场由毒蛇评论引起的检查思考
+date: 2025-05-11
+tag:
+  - type
 ---
 
 起因是在玩 [GitHub 锐评生成器](https://github.com/BingyanStudio/github-analyzer)，结果LLM评论了“至于那些在vscode-go 里补缺失的反引号的行为，建议直接给 Markdown 发明个类型检查器”。好好好，我们来讨论一下类型检查器。

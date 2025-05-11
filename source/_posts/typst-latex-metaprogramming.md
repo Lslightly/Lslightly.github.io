@@ -2,6 +2,7 @@
 title: 从typst和latex比较引发的metaprogramming
 tags:
     - metaprogramming
+date: 2025-05-11
 ---
 
 起源是我在知乎上[关于typst let和latex newcommand的区别提问](https://www.zhihu.com/question/638846250)。其实这背后也隐藏着metaprogramming的影子。
