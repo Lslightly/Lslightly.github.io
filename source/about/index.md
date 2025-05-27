@@ -18,22 +18,21 @@ I'm Lslightly, a CS graduate at USTC. I have broad interests and I just seek tim
 
 ## Knowledge
 
-Operating Systems: Windows11, Ubuntu, without NVIDIA/AMD GPU.
+Operating System:
+
+[![OS](https://skillicons.dev/icons?i=windows,ubuntu)](https://skillicons.dev)
 
 Programming Languages:
 
 - Familiar:
-  - Go
-  - C++
-  - Python
+
+[![Familiar](https://skillicons.dev/icons?i=go,cpp,py)](https://skillicons.dev)
+  
 - Learning:
-  - Rust
-  - Haskell
-  - OCaml
-  - JavaScript
-  - TypeScript
-  - Java
   - Lean4
+
+[![Learning](https://skillicons.dev/icons?i=rust,haskell,ocaml,js,ts,java)](https://skillicons.dev)
+
 
 - Known parts of CS(green hand):
   - Compiler(traditional)
@@ -61,6 +60,10 @@ Programming Languages:
   - Overleaf
 
 > Not so good at command line and know a little bit.
+
+Frameworks:
+
+Ehhhh...
 
 ## MyStory
 
