@@ -1,5 +1,6 @@
 ---
 title: Hexo Post Link
+date: 2025-04-12
 ---
 
 ## context
