@@ -102,7 +102,7 @@ menu:
   about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   # categories: /categories/ || fa fa-th
-  Books: /books/ || fa-solid fa-book-open
+  start-in-my-heart: https://lslightly.github.io/star-in-my-heart/ || fa-solid fa-star
   Math: /math/ || fa-solid fa-infinity
   archives: /archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
